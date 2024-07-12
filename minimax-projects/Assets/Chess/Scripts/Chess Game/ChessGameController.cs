@@ -12,9 +12,18 @@ public class ChessGameController : MonoBehaviour
 
     private PiecesCreator piecesCreator;
     private ChessPlayer whitePlayer;
+    private ChessPlayer blackPlayer;
+    private ChessPlayer activePlayer;
 
     void Awake() {
         SetDependencies();
+        CreatePlayers();
+    }
+
+    private void CreatePlayers()
+    {
+        whitePlayer = new ChessPlayer(TeamColour.White, board);
+        blackPlayer = new ChessPlayer(TeamColour.Black, board);
     }
 
     private void SetDependencies()
@@ -31,8 +40,15 @@ public class ChessGameController : MonoBehaviour
     private void StartNewGame()
     {
         CreatePieceFromLayout(startingBoardLayout);
+        activePlayer = whitePlayer;
+        GenerateAllPossiblePlayerMoves(activePlayer);
     }
-    
+
+    private void GenerateAllPossiblePlayerMoves(ChessPlayer activePlayer)
+    {
+        activePlayer.GenerateAllPossibleMoves();
+    }
+
     private void CreatePieceFromLayout(BoardLayout layout)
     {
         for (int i = 0; i < layout.GetPiecesCount(); i++){
