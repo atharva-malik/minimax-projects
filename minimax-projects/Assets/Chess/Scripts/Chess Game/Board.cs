@@ -11,9 +11,15 @@ public class Board : MonoBehaviour
     [SerializeField] private float squareSize;
 
     private Piece[,] grid;
+    private Piece selectedPiece;
+    private ChessGameController chessController;
 
     private void Awake() {
         CreateGrid();
+    }
+
+    public void SetDependencies(){
+        
     }
 
     private void CreateGrid()
@@ -24,6 +30,33 @@ public class Board : MonoBehaviour
     public void OnSquareSelected(Vector3 inputPosition)
     {
         Vector2Int coords = CalculateCoordsFromPosition(inputPosition);
+        Piece piece = GetPieceOnSquare(coords);
+        if (selectedPiece){
+            if (piece != null && selectedPiece == piece)
+                DeselectPiece();
+            else if (piece != null && selectedPiece != piece)
+
+        }
+    }
+
+    private void DeselectPiece()
+    {
+        selectedPiece = null;
+    }
+
+    private Piece GetPieceOnSquare(Vector2Int coords)
+    {
+        if (CheckIfCoordinatesAreOnBoard(coords)){
+            return grid[coords.x, coords.y];
+        }
+        return null;
+    }
+
+    private bool CheckIfCoordinatesAreOnBoard(Vector2Int coords)
+    {
+        if (coords.x < 0 || coords.y < 0 || coords.x >= BOARD_SIZE || coords.y >= BOARD_SIZE)
+            return false;
+        return true;
     }
 
     private Vector2Int CalculateCoordsFromPosition(Vector3 inputPosition)
