@@ -7,10 +7,11 @@ using UnityEngine;
 public class ChessGameController : MonoBehaviour
 {
 
-    [SerializeField]
-    private BoardLayout startingBoardLayout;
+    [SerializeField] private BoardLayout startingBoardLayout;
+    [SerializeField] private Board board;
 
     private PiecesCreator piecesCreator;
+    private ChessPlayer whitePlayer;
 
     void Awake() {
         SetDependencies();
@@ -27,16 +28,9 @@ public class ChessGameController : MonoBehaviour
         StartNewGame();
     }
 
-
-    // Update is called once per frame
-    void Update()
-    {
-        CreatePieceFromLayout(startingBoardLayout);
-    }
-
     private void StartNewGame()
     {
-        throw new NotImplementedException();
+        CreatePieceFromLayout(startingBoardLayout);
     }
     
     private void CreatePieceFromLayout(BoardLayout layout)
@@ -54,5 +48,9 @@ public class ChessGameController : MonoBehaviour
     private void CreatePieceAndInitialize(Vector2Int squareCoords, TeamColour team, Type type)
     {
         Piece newPiece = piecesCreator.CreatePiece(type).GetComponent<Piece>();
+        newPiece.SetData(squareCoords, team, board);
+
+        Material teamMaterial = piecesCreator.GetTeamMaterial(team);
+        newPiece.SetMaterial(teamMaterial);
     }
 }

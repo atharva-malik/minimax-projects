@@ -17,10 +17,15 @@ public class PiecesCreator : MonoBehaviour
     }
 
     public GameObject CreatePiece(Type type){
-        GameObject prefab = 
+        GameObject prefab = nameToPieceDict[type.ToString()];
+        if (prefab){
+            GameObject piece = Instantiate(prefab);
+            return piece;
+        }
+        return null;
     }
 
-    public Material getTeamMaterial(TeamColour team){
-
+    public Material GetTeamMaterial(TeamColour team){
+        return team == TeamColour.White ? whiteMaterial : blackMaterial;
     }
 }
