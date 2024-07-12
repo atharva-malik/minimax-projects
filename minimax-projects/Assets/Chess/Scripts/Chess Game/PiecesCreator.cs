@@ -19,8 +19,8 @@ public class PiecesCreator : MonoBehaviour
     public GameObject CreatePiece(Type type){
         GameObject prefab = nameToPieceDict[type.ToString()];
         if (prefab){
-            GameObject piece = Instantiate(prefab);
-            return piece;
+            GameObject newPiece = Instantiate(prefab);
+            return newPiece;
         }
         return null;
     }

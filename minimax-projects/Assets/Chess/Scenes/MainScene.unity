@@ -134,6 +134,8 @@ GameObject:
   - component: {fileID: 10612466}
   - component: {fileID: 10612467}
   - component: {fileID: 10612468}
+  - component: {fileID: 10612469}
+  - component: {fileID: 10612470}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -190,8 +192,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df3ff11bdf27f9b4ab8dfdd928211275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BOARD_SIZE: 8
   bottomLeftSquareTransform: {fileID: 50296903}
   squareSize: 1.5
+--- !u!114 &10612469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10612465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1f10139d1f25524db3d3f48ef695199, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &10612470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10612465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb5d2c0b003a0c84b9fce80a4598735b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &50296902
 GameObject:
   m_ObjectHideFlags: 0

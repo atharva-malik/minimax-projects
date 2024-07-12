@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Board : MonoBehaviour
 {
-    public int BOARD_SIZE = 8;
+    public const int BOARD_SIZE = 8;
 
     [SerializeField] private Transform bottomLeftSquareTransform;
     [SerializeField] private float squareSize;
@@ -18,8 +18,8 @@ public class Board : MonoBehaviour
         CreateGrid();
     }
 
-    public void SetDependencies(){
-        
+    public void SetDependencies(ChessGameController chessController){
+        this.chessController = chessController;
     }
 
     private void CreateGrid()
@@ -34,9 +34,39 @@ public class Board : MonoBehaviour
         if (selectedPiece){
             if (piece != null && selectedPiece == piece)
                 DeselectPiece();
-            else if (piece != null && selectedPiece != piece)
-
+            else if (piece != null && selectedPiece != piece && chessController.IsTeamTurnActive(piece.team))
+                SelectPiece(piece);
+            else if (selectedPiece.CanMoveTo(coords))
+                OnSelectedPieceMoved(coords, selectedPiece);
         }
+        else{
+            if (piece!= null && chessController.IsTeamTurnActive(piece.team))
+                SelectPiece(piece);
+        }
+    }
+
+    private void OnSelectedPieceMoved(Vector2Int coords, Piece selectedPiece)
+    {
+        UpdateBoardOnPieceMove(coords, selectedPiece.occupiedSquare, selectedPiece, null);
+        selectedPiece.MovePiece(coords);
+        DeselectPiece();
+        EndTurn();
+    }
+
+    private void EndTurn()
+    {
+        chessController.EndTurn();
+    }
+
+    private void UpdateBoardOnPieceMove(Vector2Int newCoords, Vector2Int oldCoords, Piece newPiece, Piece oldPiece)
+    {
+        grid[oldCoords.x, oldCoords.y] = oldPiece;
+        grid[newCoords.x, newCoords.y] = newPiece;
+    }
+
+    private void SelectPiece(Piece piece)
+    {
+        selectedPiece = piece;
     }
 
     private void DeselectPiece()
@@ -44,7 +74,7 @@ public class Board : MonoBehaviour
         selectedPiece = null;
     }
 
-    private Piece GetPieceOnSquare(Vector2Int coords)
+    public Piece GetPieceOnSquare(Vector2Int coords)
     {
         if (CheckIfCoordinatesAreOnBoard(coords)){
             return grid[coords.x, coords.y];
@@ -52,7 +82,7 @@ public class Board : MonoBehaviour
         return null;
     }
 
-    private bool CheckIfCoordinatesAreOnBoard(Vector2Int coords)
+    public bool CheckIfCoordinatesAreOnBoard(Vector2Int coords)
     {
         if (coords.x < 0 || coords.y < 0 || coords.x >= BOARD_SIZE || coords.y >= BOARD_SIZE)
             return false;
@@ -79,5 +109,11 @@ public class Board : MonoBehaviour
     public Vector3 CalculatePositionFromCoords(Vector2Int coords)
     {
         return bottomLeftSquareTransform.position + new Vector3(coords.x * squareSize, 0f, coords.y * squareSize);
+    }
+
+    public void SetPieceOnBoard(Vector2Int coords, Piece newPiece)
+    {
+        if (CheckIfCoordinatesAreOnBoard(coords))
+            grid[coords.x, coords.y] = newPiece;
     }
 }

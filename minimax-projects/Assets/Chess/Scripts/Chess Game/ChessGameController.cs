@@ -39,6 +39,7 @@ public class ChessGameController : MonoBehaviour
 
     private void StartNewGame()
     {
+        board.SetDependencies(this);
         CreatePieceFromLayout(startingBoardLayout);
         activePlayer = whitePlayer;
         GenerateAllPossiblePlayerMoves(activePlayer);
@@ -68,5 +69,32 @@ public class ChessGameController : MonoBehaviour
 
         Material teamMaterial = piecesCreator.GetTeamMaterial(team);
         newPiece.SetMaterial(teamMaterial);
+
+        board.SetPieceOnBoard(squareCoords, newPiece);
+
+        ChessPlayer currentPlayer = team == TeamColour.White? whitePlayer : blackPlayer;
+        currentPlayer.AddPiece(newPiece);
+    }
+
+    public bool IsTeamTurnActive(TeamColour team)
+    {
+        return activePlayer.team == team;
+    }
+
+    public void EndTurn()
+    {
+        GenerateAllPossiblePlayerMoves(activePlayer);
+        GenerateAllPossiblePlayerMoves(GetOpponentToPlayer(activePlayer));
+        ChangeActiveTeam();
+    }
+
+    private void ChangeActiveTeam()
+    {
+        activePlayer = activePlayer == whitePlayer? blackPlayer : whitePlayer;
+    }
+
+    private ChessPlayer GetOpponentToPlayer(ChessPlayer player)
+    {
+        return player == whitePlayer? blackPlayer : whitePlayer;
     }
 }
