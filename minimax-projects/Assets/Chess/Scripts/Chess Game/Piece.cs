@@ -66,4 +66,23 @@ public abstract class Piece : MonoBehaviour
         }
         return false;
     }
+
+    protected Piece GetPieceInDirection<T>(TeamColour team, Vector2Int direction) where T : Piece
+    {
+        for (int i = 1; i <= Board.BOARD_SIZE; i++)
+        {
+            Vector2Int nextCoords = occupiedSquare + direction * i;
+            Piece piece = board.GetPieceOnSquare(nextCoords);
+            if (!board.CheckIfCoordinatesAreOnBoard(nextCoords))
+                return null;
+            if (piece != null)
+            {
+                if (piece.team != team || !(piece is T))
+                    return null;
+                else if (piece.team == team && piece is T)
+                    return piece;
+            }
+        }
+        return null;
+    }
 }
