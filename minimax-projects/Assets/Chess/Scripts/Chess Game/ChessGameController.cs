@@ -50,6 +50,20 @@ public class ChessGameController : MonoBehaviour
         SetGameState(GameState.Play);
     }
 
+    public void RestartGame(){
+        DestroyPieces();
+        board.OnGameRestarted();
+        whitePlayer.OnGameRestarted();
+        blackPlayer.OnGameRestarted();
+        StartNewGame();
+    }
+
+    private void DestroyPieces()
+    {
+        whitePlayer.activePieces.ForEach(p => Destroy(p.gameObject));
+        blackPlayer.activePieces.ForEach(p => Destroy(p.gameObject));
+    }
+
     private void SetGameState(GameState state)
     {
         this.state = state;
@@ -141,5 +155,12 @@ public class ChessGameController : MonoBehaviour
 
     public void RemoveMovesEnablingAttackOnPieceOfType<T>(Piece piece) where T : Piece{
         activePlayer.RemoveMovesEnablingAttackOnPiece<T>(GetOpponentToPlayer(activePlayer), piece);
+    }
+
+    public void OnPieceRemoved(Piece piece)
+    {
+        ChessPlayer pieceOwner = (piece.team == TeamColour.White) ? whitePlayer : blackPlayer;
+        pieceOwner.RemovePiece(piece);
+        Destroy(piece.gameObject);
     }
 }

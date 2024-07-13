@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ChessPlayer
@@ -53,6 +54,7 @@ public class ChessPlayer
             opponent.GenerateAllPossibleMoves();
             if(opponent.CheckIfIsAttackingPiece<T>())
                 coordsToRemove.Add(coords);
+            board.UpdateBoardOnPieceMove(selectedPiece.occupiedSquare, coords, selectedPiece, pieceOnSquare); 
         }
         foreach (var coords in coordsToRemove){
             selectedPiece.availableMoves.Remove(coords); 
@@ -83,5 +85,10 @@ public class ChessPlayer
             }
         }
         return false;
+    }
+
+    public void OnGameRestarted()
+    {
+        activePieces.Clear();
     }
 }

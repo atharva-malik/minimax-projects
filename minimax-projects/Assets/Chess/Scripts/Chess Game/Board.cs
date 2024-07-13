@@ -70,7 +70,7 @@ public class Board : MonoBehaviour
     {
         if(piece){
             grid[piece.occupiedSquare.x, piece.occupiedSquare.y] = null;
-            ChessGameController.
+            chessController.OnPieceRemoved(piece);
         }
     }
 
@@ -151,5 +151,11 @@ public class Board : MonoBehaviour
     {
         if (CheckIfCoordinatesAreOnBoard(coords))
             grid[coords.x, coords.y] = newPiece;
+    }
+
+    public void OnGameRestarted()
+    {
+        selectedPiece = null;
+        CreateGrid();
     }
 }
