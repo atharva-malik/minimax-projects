@@ -11,7 +11,7 @@ public class Rook : Piece
         availableMoves.Clear();
         float range = Board.BOARD_SIZE;
         foreach(var direction in directions){
-            for (int i = 1; i < range; i++){
+            for (int i = 1; i <= range; i++){
                 Vector2Int nextCoords = occupiedSquare + direction * i;
                 Piece piece = board.GetPieceOnSquare(nextCoords);
                 if (!board.CheckIfCoordinatesAreOnBoard(nextCoords))
@@ -19,9 +19,13 @@ public class Rook : Piece
                 if (piece == null)
                     TryToAddMove(nextCoords);
                 else if (!piece.IsFromSameTeam(this)){
-                    
+                    TryToAddMove(nextCoords);
+                    break;
+                }else if (piece.IsFromSameTeam(this)){
+                    break;
                 }
             }
         }
+        return availableMoves;
     }
 }
