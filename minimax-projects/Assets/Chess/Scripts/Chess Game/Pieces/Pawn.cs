@@ -35,5 +35,21 @@ public class Pawn : Piece
             }
         }
         return availableMoves;
-    }  
+    }
+
+    public override void MovePiece(Vector2Int coords)
+    {
+        base.MovePiece(coords);
+        CheckPromotion();
+    }
+
+    private void CheckPromotion()
+    {
+        int endOfBoardYCoord = team == TeamColour.White ? Board.BOARD_SIZE - 1 : 0;
+        if (occupiedSquare.y == endOfBoardYCoord)
+        {
+            board.PromotePiece(this);
+            // board.Promote(this);
+        }
+    }
 }

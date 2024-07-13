@@ -10,6 +10,7 @@ public class Board : MonoBehaviour
 
     [SerializeField] private Transform bottomLeftSquareTransform;
     [SerializeField] private float squareSize;
+    [SerializeField] private ChessUIManager uIManager;
 
     private Piece[,] grid;
     private Piece selectedPiece;
@@ -157,5 +158,12 @@ public class Board : MonoBehaviour
     {
         selectedPiece = null;
         CreateGrid();
+    }
+
+    public void PromotePiece(Pawn pawn)
+    {
+        TakePiece(pawn);
+        // uIManager.Promote();
+        chessController.CreatePieceAndInitialize(pawn.occupiedSquare, pawn.team, typeof(Queen)); // TODO: make this more flexible
     }
 }
