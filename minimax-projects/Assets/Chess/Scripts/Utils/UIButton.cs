@@ -1,18 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class UIButton : MonoBehaviour
+[RequireComponent(typeof(UIInputReciever))]
+public class UIButton : Button
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private InputReciever receiver;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    protected override void Awake(){
+        base.Awake();
+        receiver = GetComponent<UIInputReciever>();
+        onClick.AddListener(() => receiver.OnInputReceived());
     }
 }
